@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.7.1;
 
-import "../Interfaces/IERC20.sol";
-import "../OpenZeppelin/SafeMath.sol";
-import "./LibDiamond.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@pie-dao/diamond/contracts/libraries/LibDiamond.sol";
 
-import "../Interfaces/IERC20Facet.sol";
+import "../../interfaces/IERC20Facet.sol";
 import "./LibERC20Storage.sol";
 import "./LibERC20.sol";
-import "./CallProtection.sol";
+import "../shared/Access/CallProtection.sol";
 
 contract ERC20Facet is IERC20, IERC20Facet, CallProtection {
   using SafeMath for uint256;

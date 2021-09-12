@@ -2,11 +2,11 @@
 pragma experimental ABIEncoderV2;
 pragma solidity ^0.7.1;
 
-import "./OpenZeppelin/SafeMath.sol";
-import "./Interfaces/IERC20.sol";
-import "./Interfaces/ILendingLogic.sol";
-import "./Interfaces/IATokenV2.sol";
-import "./Interfaces/IAaveLendingPoolV2.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "../../interfaces/ILendingLogic.sol";
+import "../../interfaces/IATokenV2.sol";
+import "../../interfaces/IAaveLendingPoolV2.sol";
 
 contract ATokenV2 is IATokenV2 {
     address public UNDERLYING_ASSET_ADDRESS;
@@ -17,11 +17,13 @@ contract LendingLogicAaveV2 is ILendingLogic {
 
     IAaveLendingPoolV2 public lendingPool;
     uint16 public referralCode;
+    address public tokenHolder;
 
-    constructor(address _lendingPool, uint16 _referralCode) {
+    constructor(address _lendingPool, uint16 _referralCode, address _tokenHolder) {
         require(_lendingPool != address(0), "LENDING_POOL_INVALID");
         lendingPool = IAaveLendingPoolV2(_lendingPool);
         referralCode = _referralCode;
+        tokenHolder = _tokenHolder;
     }
 
     function getAPRFromWrapped(address _token) external view override returns(uint256) {
@@ -34,7 +36,7 @@ contract LendingLogicAaveV2 is ILendingLogic {
         return reserveData.currentLiquidityRate.div(1000000000);
     }
 
-    function lend(address _underlying,uint256 _amount, address _tokenHolder) external view override returns(address[] memory targets, bytes[] memory data) {
+    function lend(address _underlying, uint256 _amount) external view override returns(address[] memory targets, bytes[] memory data) {
         IERC20 underlying = IERC20(_underlying);
 
         targets = new address[](3);
@@ -50,12 +52,12 @@ contract LendingLogicAaveV2 is ILendingLogic {
 
         // Deposit into Aave
         targets[2] = address(lendingPool);
-        data[2] =  abi.encodeWithSelector(lendingPool.deposit.selector, _underlying, _amount, _tokenHolder, referralCode);
+        data[2] =  abi.encodeWithSelector(lendingPool.deposit.selector, _underlying, _amount, tokenHolder, referralCode);
 
         return(targets, data);
     }
 
-    function unlend(address _wrapped, uint256 _amount,address _tokenHolder) external view override returns(address[] memory targets, bytes[] memory data) {
+    function unlend(address _wrapped, uint256 _amount) external view override returns(address[] memory targets, bytes[] memory data) {
         ATokenV2 wrapped = ATokenV2(_wrapped);
 
         targets = new address[](1);
@@ -66,7 +68,7 @@ contract LendingLogicAaveV2 is ILendingLogic {
             lendingPool.withdraw.selector,
             wrapped.UNDERLYING_ASSET_ADDRESS(),
             _amount,
-            _tokenHolder
+            tokenHolder
         );
 
         return(targets, data);

@@ -6,9 +6,9 @@ pragma experimental ABIEncoderV2;
 * Author: Nick Mudge <nick@perfectabstractions.com> (https://twitter.com/mudgen)
 /******************************************************************************/
 
-import "./LibDiamond.sol";
-import "../Interfaces/IDiamondLoupe.sol";
-import "../Interfaces/IERC165.sol";
+import "../libraries/LibDiamond.sol";
+import "../interfaces/IDiamondLoupe.sol";
+import "../interfaces/IERC165.sol";
 
 contract DiamondLoupeFacet is IDiamondLoupe, IERC165 {
     // Diamond Loupe Functions

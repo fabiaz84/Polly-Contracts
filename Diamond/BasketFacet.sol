@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.7.1;
 
-import "../OpenZeppelin/SafeMath.sol";
-import "../OpenZeppelin/SafeERC20.sol";
-import "../Interfaces/IBasketFacet.sol";
-import "./LibERC20Storage.sol";
-import "./LibERC20.sol";
-import "./ReentryProtection.sol";
-import "./CallProtection.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
+import "../../interfaces/IBasketFacet.sol";
+import "../ERC20/LibERC20Storage.sol";
+import "../ERC20/LibERC20.sol";
+import "../shared/Reentry/ReentryProtection.sol";
+import "../shared/Access/CallProtection.sol";
 import "./LibBasketStorage.sol";
 
 contract BasketFacet is ReentryProtection, CallProtection, IBasketFacet {

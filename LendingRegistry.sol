@@ -3,8 +3,8 @@ pragma experimental ABIEncoderV2;
 pragma solidity ^0.7.1;
 
 
-import "./OpenZeppelin/Ownable.sol";
-import "./Interfaces/ILendingLogic.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "../../interfaces/ILendingLogic.sol";
 
 // TODO consider making this contract upgradeable
 contract LendingRegistry is Ownable {
@@ -46,7 +46,7 @@ contract LendingRegistry is Ownable {
 
     /**
         @notice Set the logic contract for the protocol
-        @param _protocol Bytes32 key of the protocol
+        @param _protocol Bytes32 key of the procol
         @param _logic Address of the lending logic contract for that protocol
     */
     function setProtocolToLogic(bytes32 _protocol, address _logic) onlyOwner external {
@@ -73,11 +73,11 @@ contract LendingRegistry is Ownable {
         @return targets Addresses of the contracts to call
         @return data Calldata for the calls
     */
-    function getLendTXData(address _underlying, uint256 _amount, address _tokenHolder, bytes32 _protocol) external view returns(address[] memory targets, bytes[] memory data) {
+    function getLendTXData(address _underlying, uint256 _amount, bytes32 _protocol) external view returns(address[] memory targets, bytes[] memory data) {
         ILendingLogic lendingLogic = ILendingLogic(protocolToLogic[_protocol]);
         require(address(lendingLogic) != address(0), "NO_LENDING_LOGIC_SET");
 
-        return lendingLogic.lend(_underlying, _amount, _tokenHolder);
+        return lendingLogic.lend(_underlying, _amount);
     }
 
     /**
@@ -87,11 +87,11 @@ contract LendingRegistry is Ownable {
         @return targets Addresses of the contracts to call
         @return data Calldata for the calls
     */
-    function getUnlendTXData(address _wrapped, uint256 _amount, address _tokenHolder) external view returns(address[] memory targets, bytes[] memory data) {
+    function getUnlendTXData(address _wrapped, uint256 _amount) external view returns(address[] memory targets, bytes[] memory data) {
         ILendingLogic lendingLogic = ILendingLogic(protocolToLogic[wrappedToProtocol[_wrapped]]);
         require(address(lendingLogic) != address(0), "NO_LENDING_LOGIC_SET");
 
-        return lendingLogic.unlend(_wrapped, _amount, _tokenHolder);
+        return lendingLogic.unlend(_wrapped, _amount);
     }
 
     /**

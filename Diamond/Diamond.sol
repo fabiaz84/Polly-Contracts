@@ -8,12 +8,12 @@ pragma experimental ABIEncoderV2;
 * Implementation of a diamond.
 /******************************************************************************/
 
-import "./LibDiamond.sol";
-import "./LibDiamondInitialize.sol";
-import "../Interfaces/IDiamondLoupe.sol";
-import "../Interfaces/IDiamondCut.sol";
-import "../Interfaces/IERC173.sol";
-import "../Interfaces/IERC165.sol";
+import "./libraries/LibDiamond.sol";
+import "./libraries/LibDiamondInitialize.sol";
+import "./interfaces/IDiamondLoupe.sol";
+import "./interfaces/IDiamondCut.sol";
+import "./interfaces/IERC173.sol";
+import "./interfaces/IERC165.sol";
 
 contract Diamond {
     function initialize(IDiamondCut.FacetCut[] memory _diamondCut, address _owner) external payable {

@@ -1,5 +1,5 @@
 /**
- *Submitted for verification at Etherscan.io on 2020-12-15
+ *Submitted for verification at Etherscan.io on 2020-08-06
 */
 
 // File: @openzeppelin/contracts/GSN/Context.sol
@@ -108,7 +108,6 @@ interface IRegistry {
     function entries(uint256 _index) external view returns(address);
     function addSmartPool(address _smartPool) external;
     function removeSmartPool(uint256 _index) external;
-    function removeSmartPoolByAddress(address _address) external;
 }
 // File: localhost/contracts/Registry.sol
 
@@ -126,7 +125,7 @@ contract SmartPoolRegistry is IRegistry, Ownable {
         inRegistry[_smartPool] = true;
     }
 
-    function removeSmartPool(uint256 _index) public override onlyOwner {
+    function removeSmartPool(uint256 _index) external override onlyOwner {
         address registryAddress = entries[_index];
 
         inRegistry[registryAddress] = false;
@@ -136,14 +135,8 @@ contract SmartPoolRegistry is IRegistry, Ownable {
         // Pop last one off
         entries.pop();
     }
-    
-    function removeSmartPoolByAddress(address _address) external override onlyOwner {
-        // Search for pool and remove it if found. Otherwise do nothing
-        for(uint256 i = 0; i < entries.length; i ++) {
-            if(_address == entries[i]) {
-                removeSmartPool(i);
-                break;
-            }
-        }   
+
+    function getEntries() external view returns(address[] memory) {
+        return entries;
     }
 }

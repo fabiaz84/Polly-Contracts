@@ -2,11 +2,12 @@
 pragma solidity ^0.7.1;
 pragma experimental ABIEncoderV2;
 
-import "./Diamond/Diamond.sol";
-import "./OpenZeppelin/Ownable.sol";
-import "./OpenZeppelin/SafeERC20.sol";
-import "./Diamond/PProxy.sol";
-import "./Interfaces/IExperiPie.sol";
+import "diamond-2/contracts/Diamond.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
+import "@pie-dao/proxy/contracts/PProxy.sol";
+
+import "../interfaces/IExperiPie.sol";
 
 contract PieFactoryContract is Ownable {
     using SafeERC20 for IERC20;

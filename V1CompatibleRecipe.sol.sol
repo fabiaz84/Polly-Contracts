@@ -3,16 +3,17 @@ pragma solidity 0.8.1;
 pragma experimental ABIEncoderV2;
 
 import "./UniPieRecipe.sol";
-import "../Interfaces/IWETH.sol";
+import "../interfaces/IWETH.sol";
 
 contract V1CompatibleRecipe is UniPieRecipe {
     using SafeERC20 for IERC20;
 
     constructor(
         address _weth,
+        address _uniRouter,
         address _sushiRouter,
         address _lendingRegistry,
-        address _pieRegistry) UniPieRecipe(_weth, _sushiRouter, _lendingRegistry, _pieRegistry) {
+        address _pieRegistry) UniPieRecipe(_weth, _uniRouter, _sushiRouter, _lendingRegistry, _pieRegistry) {
             //nothing here
     }
 

@@ -10,7 +10,7 @@ pragma experimental ABIEncoderV2;
 * This code is as complex as it is to reduce gas costs.
 /******************************************************************************/
 
-import "../Interfaces/IDiamondCut.sol";
+import "../interfaces/IDiamondCut.sol";
 
 library LibDiamond {
         bytes32 constant DIAMOND_STORAGE_POSITION = keccak256("diamond.standard.diamond.storage");

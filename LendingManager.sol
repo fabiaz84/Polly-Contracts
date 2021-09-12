@@ -2,11 +2,11 @@
 pragma experimental ABIEncoderV2;
 pragma solidity ^0.7.1;
 
-import "./OpenZeppelin/Ownable.sol";
-import "./OpenZeppelin/ReentrancyGuard.sol";
-import "./OpenZeppelin/Math.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/math/Math.sol";
 import "./LendingRegistry.sol";
-import "./Interfaces/IExperiPie.sol";
+import "../../interfaces/IExperiPie.sol";
 
 contract LendingManager is Ownable, ReentrancyGuard {
     using Math for uint256;
@@ -42,7 +42,7 @@ contract LendingManager is Ownable, ReentrancyGuard {
         (
             address[] memory _targets,
             bytes[] memory _data
-        ) = lendingRegistry.getLendTXData(_underlying, amount, address(basket) ,_protocol);
+        ) = lendingRegistry.getLendTXData(_underlying, amount, _protocol);
 
         basket.callNoValue(_targets, _data);
 
@@ -69,7 +69,7 @@ contract LendingManager is Ownable, ReentrancyGuard {
         (
             address[] memory _targets,
             bytes[] memory _data
-        ) = lendingRegistry.getUnlendTXData(_wrapped, amount, address(basket));
+        ) = lendingRegistry.getUnlendTXData(_wrapped, amount);
         basket.callNoValue(_targets, _data);
 
         // if needed add underlying

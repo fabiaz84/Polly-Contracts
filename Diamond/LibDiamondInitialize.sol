@@ -8,7 +8,7 @@ pragma experimental ABIEncoderV2;
 * Tracks if the contract is already intialized or not
 /******************************************************************************/
 
-import "../Interfaces/IDiamondCut.sol";
+import "../interfaces/IDiamondCut.sol";
 
 library LibDiamondInitialize {
     bytes32 constant DIAMOND_INITIALIZE_STORAGE_POSITION = keccak256("diamond.standard.initialize.diamond.storage");

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.7.1;
 
-import "./LibDiamond.sol";
+import "@pie-dao/diamond/contracts/libraries/LibDiamond.sol";
 
 contract CallProtection {
     modifier protectedCall() {

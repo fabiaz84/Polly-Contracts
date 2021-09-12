@@ -2,10 +2,10 @@
 pragma experimental ABIEncoderV2;
 pragma solidity ^0.7.1;
 
-import "./LibDiamond.sol";
-import "../Interfaces/ICallFacet.sol";
-import "./ReentryProtection.sol";
-import "./CallProtection.sol";
+import "@pie-dao/diamond/contracts/libraries/LibDiamond.sol";
+import "../../interfaces/ICallFacet.sol";
+import "../shared/Reentry/ReentryProtection.sol";
+import "../shared/Access/CallProtection.sol";
 import "./LibCallStorage.sol";
 
 contract CallFacet is ReentryProtection, ICallFacet {
@@ -61,7 +61,11 @@ contract CallFacet is ReentryProtection, ICallFacet {
     emit CallerRemoved(_caller);
   }
 
-  function call(address[] memory _targets,bytes[] memory _calldata,uint256[] memory _values) public override noReentry protectedCall {
+  function call(
+    address[] memory _targets,
+    bytes[] memory _calldata,
+    uint256[] memory _values
+  ) public override noReentry protectedCall {
     require(
       _targets.length == _calldata.length && _values.length == _calldata.length,
       "ARRAY_LENGTH_MISMATCH"
@@ -72,7 +76,10 @@ contract CallFacet is ReentryProtection, ICallFacet {
     }
   }
 
-  function callNoValue(address[] memory _targets,bytes[] memory _calldata) public override noReentry protectedCall {
+  function callNoValue(
+    address[] memory _targets,
+    bytes[] memory _calldata
+  ) public override noReentry protectedCall {
     require(
       _targets.length == _calldata.length,
       "ARRAY_LENGTH_MISMATCH"
@@ -83,11 +90,19 @@ contract CallFacet is ReentryProtection, ICallFacet {
     }
   }
 
-  function singleCall(address _target,bytes calldata _calldata,uint256 _value) external override noReentry protectedCall {
+  function singleCall(
+    address _target,
+    bytes calldata _calldata,
+    uint256 _value
+  ) external override noReentry protectedCall {
     _call(_target, _calldata, _value);
   }
 
-  function _call(address _target,bytes memory _calldata,uint256 _value) internal {
+  function _call(
+    address _target,
+    bytes memory _calldata,
+    uint256 _value
+  ) internal {
     require(address(this).balance >= _value, "ETH_BALANCE_TOO_LOW");
     (bool success, ) = _target.call{ value: _value }(_calldata);
     require(success, "CALL_FAILED");
